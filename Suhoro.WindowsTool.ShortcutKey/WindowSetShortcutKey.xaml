@@ -1,0 +1,160 @@
+﻿<Window x:Class="Suhoro.WindowsTool.ShortcutKey.WindowSetShortcutKey"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Suhoro.WindowsTool.ShortcutKey"
+        xmlns:vm="clr-namespace:Suhoro.WindowsTool.ShortcutKey.ViewModels"
+        xmlns:core="clr-namespace:System;assembly=mscorlib"
+        xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
+        mc:Ignorable="d"
+        d:DataContext="{d:DesignInstance Type=vm:VmWindow}"
+        Title="快捷键" Height="800" Width="1000">
+    <b:Interaction.Triggers>
+        <b:EventTrigger EventName="Closing">
+            <b:InvokeCommandAction Command="{Binding CommandSave}" PassEventArgsToCommand="True"/>
+        </b:EventTrigger>
+    </b:Interaction.Triggers>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="40"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+        </Grid.RowDefinitions>
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="190"/>
+                <ColumnDefinition Width="80"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="80"/>
+            </Grid.ColumnDefinitions>
+            <Label Grid.Column="0">快捷键起止最大间隔时间(ms)：</Label>
+            <TextBox Text="{Binding HotKeyInterval}" InputScope="Number" Width="75" Height="20" Grid.Column="1" MaxLines="1"/>
+            <!--<Button Command="{Binding CommandSave}" Grid.Column="3" Content="保存"></Button>-->
+        </Grid>
+        <Grid Grid.Row="1" Margin="5,5,5,5">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Label Grid.Row="0" Content="键位映射:"></Label>
+            <DataGrid Grid.Row="1" CanUserDeleteRows="True" CanUserAddRows="True" EnableColumnVirtualization="True" AutoGenerateColumns="False" ItemsSource="{Binding ShortcutKeysForKey}">
+                <b:Interaction.Triggers>
+                    <b:EventTrigger EventName="InitializingNewItem">
+                        <b:InvokeCommandAction Command="{Binding CommandInitializingNewItemForKey}" PassEventArgsToCommand="True"></b:InvokeCommandAction>
+                    </b:EventTrigger>
+                </b:Interaction.Triggers>
+                <DataGrid.Columns>
+                    <DataGridCheckBoxColumn Header="启用" Binding="{Binding Path=IsEnable}"></DataGridCheckBoxColumn>
+                    <DataGridCheckBoxColumn Header="始终保持监听" IsReadOnly="True" Binding="{Binding Path=IsAlwaysEffect}"></DataGridCheckBoxColumn>
+                    <DataGridTextColumn Header="名称" Binding="{Binding Path=Name}"></DataGridTextColumn>
+                    <DataGridTextColumn Header="描述" Binding="{Binding Path=Description}"></DataGridTextColumn>
+                    <DataGridTemplateColumn Header="快捷键">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBox IsReadOnly="True" Text="{Binding Path=ListenKeysDisplay, Mode=OneWay}" Background="{Binding Background}">
+                                    <b:Interaction.Triggers>
+                                        <b:EventTrigger EventName="PreviewKeyDown">
+                                            <b:InvokeCommandAction Command="{Binding CommandSetListenKeys}" PassEventArgsToCommand="True"/>
+                                        </b:EventTrigger>
+                                    </b:Interaction.Triggers>
+                                </TextBox>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn Header="映射键">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBox IsReadOnly="True" Text="{Binding Path=MappingKeysDisplay, Mode=OneWay}">
+                                    <b:Interaction.Triggers>
+                                        <b:EventTrigger EventName="PreviewKeyDown">
+                                            <b:InvokeCommandAction Command="{Binding CommandSetMappingKeys}" PassEventArgsToCommand="True"/>
+                                        </b:EventTrigger>
+                                    </b:Interaction.Triggers>
+                                </TextBox>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+        </Grid>
+        <Grid Grid.Row="2" Margin="5,5,5,5">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Label Grid.Row="0" Content="系统命令快捷键:"></Label>
+            <DataGrid Grid.Row="1" CanUserDeleteRows="True" CanUserAddRows="True" EnableColumnVirtualization="True" AutoGenerateColumns="False" ItemsSource="{Binding ShortcutKeysForCmd}">
+                <b:Interaction.Triggers>
+                    <b:EventTrigger EventName="InitializingNewItem">
+                        <b:InvokeCommandAction Command="{Binding CommandInitializingNewItemForCmd}" PassEventArgsToCommand="True"></b:InvokeCommandAction>
+                    </b:EventTrigger>
+                </b:Interaction.Triggers>
+                <DataGrid.Columns>
+                    <DataGridCheckBoxColumn Header="启用" Binding="{Binding Path=IsEnable}"></DataGridCheckBoxColumn>
+                    <DataGridCheckBoxColumn Header="始终保持监听" Binding="{Binding Path=IsAlwaysEffect}"></DataGridCheckBoxColumn>
+                    <DataGridTextColumn Header="名称" Binding="{Binding Path=Name}"></DataGridTextColumn>
+                    <DataGridTextColumn Header="描述" Binding="{Binding Path=Description}"></DataGridTextColumn>
+                    <DataGridTemplateColumn Header="快捷键">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBox IsReadOnly="True" Text="{Binding Path=ListenKeysDisplay, Mode=OneWay}" Background="{Binding Background}">
+                                    <b:Interaction.Triggers>
+                                        <b:EventTrigger EventName="PreviewKeyDown">
+                                            <b:InvokeCommandAction Command="{Binding CommandSetListenKeys}" PassEventArgsToCommand="True"/>
+                                        </b:EventTrigger>
+                                    </b:Interaction.Triggers>
+                                </TextBox>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTextColumn Header="Cmd" Binding="{Binding Path=Mapping}"></DataGridTextColumn>
+                    <DataGridTextColumn Header="参数" Binding="{Binding Path=Args}"></DataGridTextColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+        </Grid>
+        <Grid Grid.Row="3" Margin="5,5,5,5">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Label Grid.Row="0" Content="应用命令快捷键:"></Label>
+            <DataGrid Grid.Row="1" CanUserDeleteRows="True" CanUserAddRows="True" EnableColumnVirtualization="True" AutoGenerateColumns="False" 
+                      ItemsSource="{Binding ShortcutKeysForCommand}">
+                <b:Interaction.Triggers>
+                    <b:EventTrigger EventName="InitializingNewItem">
+                        <b:InvokeCommandAction Command="{Binding CommandInitializingNewItemForCommand}" PassEventArgsToCommand="True"></b:InvokeCommandAction>
+                    </b:EventTrigger>
+                </b:Interaction.Triggers>
+                <DataGrid.Columns>
+                    <DataGridCheckBoxColumn Header="启用" Binding="{Binding Path=IsEnable}"></DataGridCheckBoxColumn>
+                    <DataGridCheckBoxColumn Header="始终保持监听" Binding="{Binding Path=IsAlwaysEffect}"></DataGridCheckBoxColumn>
+                    <DataGridTextColumn Header="名称" Binding="{Binding Path=Name}"></DataGridTextColumn>
+                    <DataGridTextColumn Header="描述" Binding="{Binding Path=Description}"></DataGridTextColumn>
+                    <DataGridTemplateColumn Header="快捷键">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <TextBox IsReadOnly="True" Text="{Binding Path=ListenKeysDisplay, Mode=OneWay}" Background="{Binding Background}">
+                                    <b:Interaction.Triggers>
+                                        <b:EventTrigger EventName="PreviewKeyDown">
+                                            <b:InvokeCommandAction Command="{Binding CommandSetListenKeys}" PassEventArgsToCommand="True"/>
+                                        </b:EventTrigger>
+                                    </b:Interaction.Triggers>
+                                </TextBox>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTemplateColumn Header="命令">
+                        <DataGridTemplateColumn.CellTemplate>
+                            <DataTemplate>
+                                <ComboBox ItemsSource="{Binding RelativeSource={RelativeSource Mode=FindAncestor,AncestorType={x:Type DataGrid}},Path=DataContext.Commands}" DisplayMemberPath="Name" SelectedValue="{Binding Command}"  SelectedItem="{Binding Command}" ></ComboBox>
+                            </DataTemplate>
+                        </DataGridTemplateColumn.CellTemplate>
+                    </DataGridTemplateColumn>
+                    <DataGridTextColumn Header="参数" Binding="{Binding Path=Args}"></DataGridTextColumn>
+                </DataGrid.Columns>
+            </DataGrid>
+        </Grid>
+    </Grid>
+</Window>

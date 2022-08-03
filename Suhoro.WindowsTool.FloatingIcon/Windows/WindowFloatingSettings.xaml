@@ -1,0 +1,58 @@
+﻿<Window x:Class="Suhoro.WindowsTool.FloatingIcon.Windows.WindowFloatingSettings"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Suhoro.WindowsTool.FloatingIcon.Windows"
+        xmlns:hc="https://handyorg.github.io/handycontrol"
+        xmlns:vm="clr-namespace:Suhoro.WindowsTool.FloatingIcon.ViewModels"
+        xmlns:cs="clr-namespace:Suhoro.WindowsTool.FloatingIcon.Configs"
+        xmlns:cvs="clr-namespace:Suhoro.WindowsTool.Core.Converters;assembly=Suhoro.WindowsTool.Core"
+        xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
+        mc:Ignorable="d"
+        d:DataContext="{d:DesignInstance Type=vm:VmFloatingSettings}"
+        Title="浮动图标设置" Height="531" Width="372" ResizeMode="NoResize">
+    <Window.Resources>
+        <cvs:ConverterColorToBrush x:Key="colorToBrushConverter"></cvs:ConverterColorToBrush>
+    </Window.Resources>
+    <StackPanel Orientation="Vertical">
+        <Grid Margin="5,5,5,5">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="80"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Label Grid.Column="0" Width="80">图标：</Label>
+            <hc:ImageSelector x:Name="iconSelector" Width="100" Height="100" DefaultExt=".png" Grid.Column="1" Filter="图片|*.jpg;*.png;*.jpeg;*.gif">
+                <b:Interaction.Triggers>
+                    <b:EventTrigger EventName="ImageSelected">
+                        <b:InvokeCommandAction Command="{Binding CommandChangeIcon}" CommandParameter="{Binding Uri, ElementName=iconSelector}"/>
+                    </b:EventTrigger>
+                </b:Interaction.Triggers>
+            </hc:ImageSelector>
+        </Grid>
+        <Grid Margin="5,5,5,5">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="80"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Label Grid.Column="0" Width="80">图标宽：</Label>
+            <TextBox Grid.Column="1" Text="{Binding Source={x:Static cs:SettingsPlugin.Default},Path=IconWidth,Mode=TwoWay}" InputScope="Number"></TextBox>
+        </Grid>
+        <Grid Margin="5,5,5,5">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="80"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Label Grid.Column="0" Width="80">图标高：</Label>
+            <TextBox  Grid.Column="1" Text="{Binding Source={x:Static cs:SettingsPlugin.Default},Path=IconHeight,Mode=TwoWay}" InputScope="Number"></TextBox>
+        </Grid>
+        <Grid Margin="5,5,5,5">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="80"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Label Grid.Column="0" Width="80">贴边颜色：</Label>
+            <hc:ColorPicker Grid.Column="1" SelectedBrush="{Binding Source={x:Static cs:SettingsPlugin.Default},Path=HiddenColor,Converter={StaticResource colorToBrushConverter},Mode=TwoWay}" Height="294"></hc:ColorPicker>
+        </Grid>
+    </StackPanel>
+</Window>

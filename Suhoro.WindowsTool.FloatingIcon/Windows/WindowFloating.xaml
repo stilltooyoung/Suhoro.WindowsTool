@@ -1,0 +1,28 @@
+﻿<Window x:Class="Suhoro.WindowsTool.FloatingIcon.Windows.WindowFloating"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
+        xmlns:local="clr-namespace:Suhoro.WindowsTool.FloatingIcon.Windows"
+        xmlns:cs="clr-namespace:Suhoro.WindowsTool.FloatingIcon.Configs"
+        xmlns:ct="clr-namespace:Suhoro.WindowsTool.Core.Converters;assembly=Suhoro.WindowsTool.Core"
+        xmlns:hc="https://handyorg.github.io/handycontrol"
+        mc:Ignorable="d"
+        Title="FloatingWindow">
+    <Window.Resources>
+        <ct:ConverterColorToBrush x:Key="colorConverter"/>
+    </Window.Resources>
+    <Canvas Name="canvas">
+        <hc:GifImage Name="icon" 
+               Width="{Binding Source={x:Static cs:SettingsPlugin.Default},Path=IconWidth}" 
+               Height="{Binding Source={x:Static cs:SettingsPlugin.Default},Path=IconHeight}" 
+               Canvas.Right="10" Canvas.Bottom="50" MouseLeave="icon_MouseLeave">
+            <b:Interaction.Behaviors>
+                <!--<cb:MouseDrogMovingBehavior />-->
+                <b:MouseDragElementBehavior/>
+            </b:Interaction.Behaviors>
+        </hc:GifImage>
+        <Rectangle Name="hiddenRectangle" Fill="{Binding Source={x:Static cs:SettingsPlugin.Default},Path=HiddenColor,Converter={StaticResource colorConverter}}" MouseEnter="hiddenRectangle_MouseEnter"></Rectangle>
+    </Canvas>
+</Window>

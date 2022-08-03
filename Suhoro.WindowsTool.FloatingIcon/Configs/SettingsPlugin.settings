@@ -1,0 +1,24 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="Suhoro.WindowsTool.FloatingIcon.Configs" GeneratedClassName="SettingsPlugin">
+  <Profiles />
+  <Settings>
+    <Setting Name="IconWidth" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">100</Value>
+    </Setting>
+    <Setting Name="IconHeight" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">100</Value>
+    </Setting>
+    <Setting Name="HiddenColor" Type="System.Drawing.Color" Scope="User">
+      <Value Profile="(Default)">Yellow</Value>
+    </Setting>
+    <Setting Name="DefaultFloatingIconName" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">defaultFloatingIcon.png</Value>
+    </Setting>
+    <Setting Name="CustomFloatingIconName" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="UriResources" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">pack://siteoforigin:,,,/Resources</Value>
+    </Setting>
+  </Settings>
+</SettingsFile>
